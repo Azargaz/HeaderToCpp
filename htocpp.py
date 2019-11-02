@@ -1,11 +1,11 @@
 import os
 
-ext = input("Do you want to convert .c or .cpp files? (default .c) ")
+ext = input("Do you want to convert .c or .cpp files? (default .cpp) (.cpp/.c)")
 
-if ext == ".cpp":
-    ext = ".cpp"
-else:
+if ext == ".c":
     ext = ".c"
+else:
+    ext = ".cpp"
 
 override = input("Do you want to override any existing {0} files? (You might lose contents of your {0} files) (Y/N) ".format(ext))
 override = str.upper(override)
@@ -24,7 +24,7 @@ if override.startswith("Y"):
             # Open/create header file
             header = open(filename, 'r')
             # Open/create .c/.cpp file
-            file = open(filename.replace(".h", ".cpp"), override)
+            file = open(filename.replace(".h", "{}".format(ext)), override)
             # Add include to file
             file.write('#include "{}"\n\n'.format(filename))
 
