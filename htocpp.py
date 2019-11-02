@@ -1,6 +1,13 @@
 import os
 
-override = input("Do you want to override any existing .cpp files? (You might lose contents of your .cpp files) (Y/N) ")
+ext = input("Do you want to convert .c or .cpp files? (default .c) ")
+
+if ext == ".cpp":
+    ext = ".cpp"
+else:
+    ext = ".c"
+
+override = input("Do you want to override any existing {0} files? (You might lose contents of your {0} files) (Y/N) ".format(ext))
 override = str.upper(override)
 
 if override.startswith("Y"):
@@ -14,12 +21,12 @@ if override.startswith("Y"):
 
     for filename in os.listdir():
         if filename.endswith(".h"):
-            # Open header file
+            # Open/create header file
             header = open(filename, 'r')
-            # Opne/create .cpp file
-            cpp = open(filename.replace(".h", ".cpp"), override)
-            # Add include to .cpp file
-            cpp.write('#include "{}"\n\n'.format(filename))
+            # Open/create .c/.cpp file
+            file = open(filename.replace(".h", ".cpp"), override)
+            # Add include to file
+            file.write('#include "{}"\n\n'.format(filename))
 
             # some variables
             inClass = 0
@@ -80,8 +87,8 @@ if override.startswith("Y"):
                     # Replace semicolon ; with empty body of a function
                     function = function.replace(";", "\n{\n\n}\n")
 
-                    # Write function to .cpp file
-                    cpp.write(function)
+                    # Write function to file
+                    file.write(function)
                 
                 # If class/struct string is in line extract it's name and append it to className list
                 # and in next iteration start looking for class/struct functions
